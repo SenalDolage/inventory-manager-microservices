@@ -6,7 +6,7 @@ export class Product {
   @ObjectIdColumn()
   _id: ObjectId;
 
-  @Column(Unique)
+  @Column()
   admin_id: number;
 
   @Column()

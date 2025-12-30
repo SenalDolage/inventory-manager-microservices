@@ -20,7 +20,7 @@ var Product = /** @class */ (function () {
         __metadata("design:type", mongodb_1.ObjectId)
     ], Product.prototype, "_id", void 0);
     __decorate([
-        (0, typeorm_1.Column)(typeorm_1.Unique),
+        (0, typeorm_1.Column)(),
         __metadata("design:type", Number)
     ], Product.prototype, "admin_id", void 0);
     __decorate([
