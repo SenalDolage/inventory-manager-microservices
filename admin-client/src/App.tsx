@@ -1,46 +1,20 @@
-import React from "react";
 import "./App.css";
-import { Table } from "react-bootstrap";
-import Header from "./components/Header";
-import Sidebar from "./components/Sidebar";
+import ListProducts from "./components/ListProducts";
+import { Route, Routes } from "react-router-dom";
+import AddProduct from "./components/AddProduct";
 
 function App() {
   return (
-    <div className="App">
-      <Header />
+    <>
+      <div className="App">
+        <Routes>
+          <Route path="/products" element={<ListProducts />} />
+          <Route path="/add-product" element={<AddProduct />} />
 
-      <div className="d-flex">
-        <Sidebar />
-
-        <div className="flex-grow-1 p-3">
-          <h5>Products</h5>
-          <Table striped bordered hover>
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Username</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>1</td>
-                <td>John</td>
-                <td>Doe</td>
-                <td>@johndoe</td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td>Jane</td>
-                <td>Smith</td>
-                <td>@janesmith</td>
-              </tr>
-            </tbody>
-          </Table>
-        </div>
+          <Route path="*" element={<ListProducts />} />
+        </Routes>
       </div>
-    </div>
+    </>
   );
 }
 
