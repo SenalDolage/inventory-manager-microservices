@@ -1,45 +1,33 @@
-import React from "react";
 import "./App.css";
-import { Table } from "react-bootstrap";
 import Header from "./components/Header";
-import Sidebar from "./components/Sidebar";
 
 function App() {
   return (
     <div className="App">
       <Header />
 
-      <div className="d-flex">
-        <Sidebar />
-
+      <main className="main container">
         <div className="flex-grow-1 p-3">
-          <h5>Products</h5>
-          <Table striped bordered hover>
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Username</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>1</td>
-                <td>John</td>
-                <td>Doe</td>
-                <td>@johndoe</td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td>Jane</td>
-                <td>Smith</td>
-                <td>@janesmith</td>
-              </tr>
-            </tbody>
-          </Table>
+          <div className="row">
+            <div className="col-md-4">
+              <div className="card mb-4">
+                <img
+                  src="https://picsum.photos/300/200"
+                  className="card-img-top"
+                  alt="Product"
+                />
+                <div className="card-body">
+                  <h5 className="card-title">Product 1</h5>
+                  <div className="d-flex align-items-center justify-content-between">
+                    <button className="btn btn-primary">Like</button>
+                    <span className="badge bg-secondary">0 Likes</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 }
