@@ -78,7 +78,7 @@ function start() {
                             }
                             console.log("Connected to RabbitMQ");
                             var app = express();
-                            app.use(cors({ origin: "http://localhost:3000" }));
+                            app.use(cors({ origin: "http://localhost:3001" }));
                             app.use(express.json());
                             // Get products route
                             app.get("/api/products", function (req, res) { return __awaiter(_this, void 0, void 0, function () {

@@ -3,7 +3,7 @@ import { Product } from "./src/entity/product";
 
 export const myDataSource = new DataSource({
   type: "mongodb",
-  url: "mongodb+srv://root:root@yt-inventory-main.kvrpeyx.mongodb.net/yt_inventory_main?retryWrites=true&w=majority",
+  url: process.env.DB_URL,
   database: "yt_inventory_main",
   entities: [Product],
   synchronize: true,
