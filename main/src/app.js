@@ -37,14 +37,13 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var express = require("express");
+require("dotenv/config");
 var cors = require("cors");
 require("reflect-metadata");
 var app_data_source_1 = require("../app-data-source");
 var product_1 = require("./entity/product");
 var amqp = require("amqplib/callback_api");
 var axios_1 = require("axios");
-var dotenv = require("dotenv");
-dotenv.config();
 function start() {
     return __awaiter(this, void 0, void 0, function () {
         var productRepository, db, error_1;
@@ -103,7 +102,9 @@ function start() {
                                         case 1:
                                             product = _a.sent();
                                             if (!product) return [3 /*break*/, 4];
-                                            return [4 /*yield*/, axios_1.default.post("http://localhost:8000/api/products/" + product.admin_id + "/like", {})];
+                                            return [4 /*yield*/, axios_1.default.post("http://localhost:8000/api/products/" +
+                                                    product.admin_id +
+                                                    "/like", {})];
                                         case 2:
                                             _a.sent();
                                             product.likes += 1;
