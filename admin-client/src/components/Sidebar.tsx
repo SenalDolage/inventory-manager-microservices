@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const Sidebar = () => {
   return (
     <div
@@ -8,14 +10,14 @@ const Sidebar = () => {
 
       <ul className="nav flex-column">
         <li className="nav-item">
-          <a className="nav-link active" href="/products">
+          <Link className="nav-link" to="/products">
             All Products
-          </a>
+          </Link>
         </li>
         <li className="nav-item">
-          <a className="nav-link" href="/add-product">
+          <Link className="nav-link" to="/add-product">
             Add New Product
-          </a>
+          </Link>
         </li>
       </ul>
     </div>
