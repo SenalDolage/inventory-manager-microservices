@@ -3,17 +3,17 @@
 Event-driven microservices demo using RabbitMQ, Node.js and TypeORM.  
 Two backend services with different databases and two React frontends:
 
-- Admin service (MySQL) —  CRUD for products and publishes events to RabbitMQ. See [admin/src/app.ts](admin/src/app.ts). Uses [`admin.myDataSource`](admin/app-data-source.ts) and the entity [`admin.Product`](admin/src/entity/product.ts).
-- Main service (MongoDB) — read-only view built from events consumed from RabbitMQ. See [main/src/app.ts](main/src/app.ts). Uses [`main.myDataSource`](main/app-data-source.ts) and the entity [`main.Product`](main/src/entity/product.ts).
-- Admin frontend — React app for managing products: [admin-client/package.json](admin-client/package.json).
-- Main frontend — React client for customers: [main-client/package.json](main-client/package.json).
+- Admin service (MySQL) —  CRUD for products and publishes events to RabbitMQ. 
+- Main service (MongoDB) — read-only view built from events consumed from RabbitMQ.
+- Admin frontend — React app for managing products.
+- Main frontend — React client for customers.
 
 ## Architecture overview
 - Event-driven architecture using RabbitMQ as the message broker. The Admin service writes to MySQL and sends events (product_created, product_updated, product_deleted). The Main service consumes those events and stores a read model in MongoDB for fast reads. Both services expose REST endpoints. Two separate React frontends consume the services:
   - Admin frontend communicates with Admin service
   - Main frontend communicates with Main service
 
-[![Image-Jan-5-2026-03-18-18-PM.png](https://i.postimg.cc/4yTRTBSf/Image-Jan-5-2026-03-18-18-PM.png)](https://postimg.cc/ZBjM8Fm2)
+[![Image-Jan-5-2026-03-18-18-PM.png](https://i.postimg.cc/X7GdPx08/Image-Jan-5-2026-03-18-18-PM.png)](https://postimg.cc/QHDF9QC9)
 
 ## Screenshots
 
