@@ -1,85 +1,37 @@
 ## inventory-manager-microservices
 
-A microservices-style inventory example with two Node/TypeORM services:
-- "admin" — a MySQL-backed service that provides full CRUD for products.
-- "main" — a MongoDB-backed read-only service that serves products to clients.
+Event-driven microservices demo using RabbitMQ, Node.js and TypeORM.  
+Two backend services with different databases and two React frontends:
 
+- Admin service (MySQL) —  CRUD for products and publishes events to RabbitMQ. See [admin/src/app.ts](admin/src/app.ts). Uses [`admin.myDataSource`](admin/app-data-source.ts) and the entity [`admin.Product`](admin/src/entity/product.ts).
+- Main service (MongoDB) — read-only view built from events consumed from RabbitMQ. See [main/src/app.ts](main/src/app.ts). Uses [`main.myDataSource`](main/app-data-source.ts) and the entity [`main.Product`](main/src/entity/product.ts).
+- Admin frontend — React app for managing products: [admin-client/package.json](admin-client/package.json).
+- Main frontend — React client for customers: [main-client/package.json](main-client/package.json).
 
-## Services
+## Architecture overview
+- Event-driven architecture using RabbitMQ as the message broker. The Admin service writes to MySQL and sends events (product_created, product_updated, product_deleted). The Main service consumes those events and stores a read model in MongoDB for fast reads. Both services expose REST endpoints. Two separate React frontends consume the services:
+  - Admin frontend communicates with Admin service
+  - Main frontend communicates with Main service
 
-### Admin service
-- Entry: [admin/src/app.ts](admin/src/app.ts)  
-- DB config / DataSource: [`admin.myDataSource`](admin/app-data-source.ts) — [admin/app-data-source.ts](admin/app-data-source.ts)  
-- Entity: [`admin.Product`](admin/src/entity/product.ts) — [admin/src/entity/product.ts](admin/src/entity/product.ts)  
-- Package: [admin/package.json](admin/package.json)  
-- TS config: [admin/tsconfig.json](admin/tsconfig.json)
+[![Image-Jan-5-2026-03-18-18-PM.png](https://i.postimg.cc/4yTRTBSf/Image-Jan-5-2026-03-18-18-PM.png)](https://postimg.cc/ZBjM8Fm2)
 
-API (see [admin/src/app.ts](admin/src/app.ts)):
-- GET  /api/products — list products
-- POST /api/products — create product
-- GET  /api/products/:id — get product
-- PUT  /api/products/:id — update product
-- DELETE /api/products/:id — delete product
-- POST /api/products/:id/like — increment likes
+## Screenshots
 
-Notes:
-- Uses MySQL (mysql2 driver). Connection configured in [`admin/app-data-source.ts`](admin/app-data-source.ts).
-- Entities are loaded from compiled JS at runtime via `entities: ["src/entity/*.js"]`.
+[![React-App.png](https://i.postimg.cc/Twy0dxWB/React-App.png)](https://postimg.cc/9RhZbvbB)
 
-### Main service
-- Entry: [main/src/app.ts](main/src/app.ts)  
-- DB config / DataSource: [`main.myDataSource`](main/app-data-source.ts) — [main/app-data-source.ts](main/app-data-source.ts)  
-- Entity: [`main.Product`](main/src/entity/product.ts) — [main/src/entity/product.ts](main/src/entity/product.ts)  
-- Package: [main/package.json](main/package.json)  
-- TS config: [main/tsconfig.json](main/tsconfig.json)
+[![React-App-and-New-tab.png](https://i.postimg.cc/6qJrBvKY/React-App-and-New-tab.png)](https://postimg.cc/ygjgPWkZ)
 
-API (see [main/src/app.ts](main/src/app.ts)):
-- GET /api/products — list products (reads from MongoDB)
-
-Notes:
-- Uses MongoDB Atlas connection configured in [`main/app-data-source.ts`](main/app-data-source.ts).
+## Environment variables
+- Admin service (set in admin/.env or environment):
+  - RABBIMQ_URL — RabbitMQ connection string
+  - (MySQL credentials are configured in [admin/app-data-source.ts](admin/app-data-source.ts).)
+- Main service (set in main/.env or environment):
+  - RABBIMQ_URL — RabbitMQ connection string
+  - DB_URL — MongoDB connection string (used by [main/app-data-source.ts](main/app-data-source.ts))
 
 ## Requirements
 - Node.js (16+ recommended)
 - npm
-- Local MySQL instance for admin service (or update credentials in [admin/app-data-source.ts](admin/app-data-source.ts))
-- MongoDB Atlas credentials are already present in [main/app-data-source.ts](main/app-data-source.ts) (update if needed)
-
-## Quick start
-
-Run each service in its folder:
-
-Admin:
-```sh
-cd admin
-npm install
-npm start
-# server listens on port 8000 (see [admin/src/app.ts](admin/src/app.ts))
-```
-
-Main:
-```sh
-cd main
-npm install
-npm start
-# server listens on port 8001 (see [main/src/app.ts](main/src/app.ts))
-```
-
-## Where to change DB settings
-- Admin (MySQL): [admin/app-data-source.ts](admin/app-data-source.ts) — [`admin.myDataSource`](admin/app-data-source.ts)  
-- Main (MongoDB): [main/app-data-source.ts](main/app-data-source.ts) — [`main.myDataSource`](main/app-data-source.ts)
-
-## Important files
-- Admin app: [admin/src/app.ts](admin/src/app.ts)  
-- Main app: [main/src/app.ts](main/src/app.ts)  
-- Admin entity: [admin/src/entity/product.ts](admin/src/entity/product.ts) (`admin.Product`)  
-- Main entity: [main/src/entity/product.ts](main/src/entity/product.ts) (`main.Product`)  
-- Admin DataSource: [admin/app-data-source.ts](admin/app-data-source.ts) (`admin.myDataSource`)  
-- Main DataSource: [main/app-data-source.ts](main/app-data-source.ts) (`main.myDataSource`)  
-- Admin package.json: [admin/package.json](admin/package.json)  
-- Main package.json: [main/package.json](main/package.json)
-
-## Notes & tips
-- The admin service expects compiled JS in `src/` (it runs `src/app.js` via nodemon). If modifying TypeScript source, ensure you compile or use a dev flow that compiles TS to JS.
-- The main service uses TypeORM's Mongo repository API (`getMongoRepository`) — see [main/src/app.ts](main/src/app.ts).
-- Keep credentials out of source for production; currently the MongoDB connection string is in [main/app-data-source.ts](main/app-data-source.ts)
+- RabbitMQ (accessible via environment URL)
+- MySQL for Admin service (or update admin/app-data-source.ts)
+- MongoDB (Atlas or local) for Main service
